@@ -10,11 +10,18 @@ import UIKit
 
 class WelcomeView: UIView {
     
+    var didTapButton: (() -> Void?)?
+    
     private let logoView: UIImageView = UIElementFactory.createImageView()
     private let welcomeLabel: UILabel = UIElementFactory.createLabel()
     private let subtextForTips: UILabel = UIElementFactory.createLabel()
     private let descriptionLabel: UILabel = UIElementFactory.createDescription()
-    private let button: UIButton = UIElementFactory.createDefaultButton(title: "Começar")
+    private let button: UIButton = {
+        let button = UIElementFactory.createDefaultButton(title: "Começar")
+        button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
+        
+        return button
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -100,5 +107,10 @@ class WelcomeView: UIView {
         tipsStackView.addArrangedSubview(tip1)
         tipsStackView.addArrangedSubview(tip2)
         tipsStackView.addArrangedSubview(tip3)
+    }
+    
+    @objc
+    private func didTap() {
+        didTapButton?()
     }
 }

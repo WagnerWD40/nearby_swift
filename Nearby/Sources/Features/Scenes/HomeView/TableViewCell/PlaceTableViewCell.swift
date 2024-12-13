@@ -9,17 +9,24 @@ import Foundation
 import UIKit
 
 class PlaceTableViewCell: UITableViewCell {
-    static let identifier = "PlaceTableCell"
+    static let identifier = "PlaceTableViewCell"
     
     let itemImageView: UIImageView = {
         let imageView = UIElementFactory.createImageView()
         imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 8
         return imageView
     }()
     
     let titleLabel: UILabel = UIElementFactory.createLabel()
-    let descriptionLabel: UILabel = UIElementFactory.createDescription()
+    let descriptionLabel: UILabel = {
+       let label = UIElementFactory.createDescription()
+        label.textColor = Colors.gray500
+        label.font = Typography.textXS
+        
+        return label
+    }()
     
     let ticketIcon: UIImageView = {
         let imageView = UIElementFactory.createImageView()
@@ -31,6 +38,7 @@ class PlaceTableViewCell: UITableViewCell {
     let ticketLabel: UILabel = {
         let label = UIElementFactory.createLabel()
         label.font = Typography.textXS
+        label.textColor = Colors.gray400
         return label
     }()
     
@@ -59,7 +67,7 @@ class PlaceTableViewCell: UITableViewCell {
         containerView.addSubview(titleLabel)
         containerView.addSubview(descriptionLabel)
         containerView.addSubview(ticketIcon)
-        containerView.addSubview(titleLabel)
+        containerView.addSubview(ticketLabel)
         
         setupConstraints();
     }
@@ -71,34 +79,46 @@ class PlaceTableViewCell: UITableViewCell {
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
             
+            itemImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+            itemImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
             itemImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
             itemImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             itemImageView.widthAnchor.constraint(equalToConstant: 116),
             itemImageView.heightAnchor.constraint(equalToConstant: 104),
             
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
-            titleLabel.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 26),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            descriptionLabel.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 26),
             descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
             
-            ticketIcon.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 8),
+            ticketIcon.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 16),
             ticketIcon.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
             ticketIcon.widthAnchor.constraint(equalToConstant: 13),
             ticketIcon.heightAnchor.constraint(equalToConstant: 11),
             
+            ticketLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 8),
             ticketLabel.centerYAnchor.constraint(equalTo: ticketIcon.centerYAnchor),
-            ticketIcon.leadingAnchor.constraint(equalTo: ticketIcon.trailingAnchor, constant: 4),
+            ticketLabel.leadingAnchor.constraint(equalTo: ticketIcon.trailingAnchor, constant: 4),
             
         ])
     }
     
     func configure(with place: Place) {
-        itemImageView.image = UIImage(named: place.imageName)
-        titleLabel.text = place.title
+        if let url = URL(string: place.cover) {
+            URLSession.shared.dataTask(with: url) { data, _, _ in
+                if let data = data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        self.itemImageView.image = image
+                    }
+                }
+            }.resume()
+        }
+
+        titleLabel.text = place.name
         descriptionLabel.text = place.description
-        ticketLabel.text = "cupons disponíveis"
+        ticketLabel.text = "\(place.coupons) cupons disponíveis"
     }
 }

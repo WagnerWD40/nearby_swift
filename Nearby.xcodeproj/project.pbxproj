@@ -29,6 +29,11 @@
 			path = Nearby;
 			sourceTree = "<group>";
 		};
+		420AB3F42D0CA78E00F3EB13 /* api */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = api;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +52,7 @@
 			children = (
 				420AB3622D08D2CC00F3EB13 /* Nearby */,
 				420AB3612D08D2CC00F3EB13 /* Products */,
+				420AB3F42D0CA78E00F3EB13 /* api */,
 			);
 			sourceTree = "<group>";
 		};
@@ -75,6 +81,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				420AB3622D08D2CC00F3EB13 /* Nearby */,
+				420AB3F42D0CA78E00F3EB13 /* api */,
 			);
 			name = Nearby;
 			packageProductDependencies = (
@@ -156,6 +163,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/api/node_modules/@prisma/engines",
+					"$(PROJECT_DIR)/api/node_modules/.prisma/client",
+					"$(PROJECT_DIR)/api/node_modules/prisma",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = NLW.Nearby;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -182,6 +195,12 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/api/node_modules/@prisma/engines",
+					"$(PROJECT_DIR)/api/node_modules/.prisma/client",
+					"$(PROJECT_DIR)/api/node_modules/prisma",
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = NLW.Nearby;
